@@ -44,10 +44,22 @@ abstract class ZohoRecord extends Element
         $this->zohoClient->setModule($module);
     }
 
+    public static function findRecord($id)
+    {
+        $zohoClient = new ZohoClient();
+        $zohoClient->getRecordById($id);
+    }
+
+    /**
+     * Save entity to Zoho CRM
+     * @return mixed
+     * @throws \Exception
+     */
     public function save()
     {
         $validXML = $this->zohoClient->mapEntity($this);
-        return $this->zohoClient->insertRecords($validXML);
+        $response = $this->zohoClient->insertRecords($validXML);
+        return $response->getRecordId();
     }
 
 }
